@@ -10,15 +10,33 @@
       <p>{{key}}</p>
     </li>
   </ul>
+  <ul>
+    <li v-for="(val, key, index) in listdir">{{val}}</li>
+  </ul>
+  <vue-tree
+    v-model="checkedIds"
+    :tree-data="treeData"
+    :options="options"
+    @handle="someActions" />
   <!-- <button @click="getRandom">New random number</button> -->
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+import VueTree from './VueTree.vue'
 export default {
+  components: { VueTree },
   data() {
     return {
+      // 复选ids,可传入id数组作为初始选中状态,如[3,4,8]
+      checkedIds: [],
+      treeData: [],
+      options: {
+          depthOpen: 1,          //初始化时展开层级,根节点为0,默认0
+          openIcon: ['far','folder'],
+          closeIcon: ['far','folder-open'],
+      },
       randomNumber: 0,
       link: {
         NextCloud: this.getUrl('8888')
@@ -32,11 +50,11 @@ export default {
       return host + ":" + port;
     },
     getDirList() {
-      const path = `http://localhost:5000/api/listdir`
+      const path = `http://localhost:5000/api/dl/listdir`
       axios.get(path)
         .then(response => {
-          this.listdir = response.data.listdir
-          console.log(response.data.listdir)
+          this.treeData = response.data.listdir
+          // console.log(response.data.listdir)
         })
         .catch(error => {
           console.log(error)
@@ -60,7 +78,11 @@ export default {
         .catch(error => {
           console.log(error)
         })
-    }
+    },
+    someActions (item) {
+        console.log(`节点 ${JSON.stringify(item)} 'handle' 事件`)
+        console.log(this.checkedIds)
+      }
   },
   created() {
     this.getDirList()
