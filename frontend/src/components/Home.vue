@@ -46,11 +46,13 @@ export default {
   },
   methods: {
     getUrl(port) {
-      const host = 'http://108.61.87.215';
-      return host + ":" + port;
+      const host = 'http://108.61.87.215'
+      return host + ":" + port
     },
     getDirList() {
-      const path = `http://localhost:5000/api/dl/listdir`
+      let rootDir = 'e:$DownLoad$0';
+      const path = `http://localhost:5000/api/dl/listdir/` + rootDir + '/1'
+      console.log(path)
       axios.get(path)
         .then(response => {
           this.treeData = response.data.listdir
@@ -80,12 +82,30 @@ export default {
         })
     },
     someActions (item) {
-        console.log(`节点 ${JSON.stringify(item)} 'handle' 事件`)
-        console.log(this.checkedIds)
-      }
+        // console.log(`节点 ${JSON.stringify(item)} 'handle' 事件`)
+        // console.log(item)
+        console.log(3)
+    },
+    getchild (rootDir) {
+        console.log(3)
+        rootDir = `http://localhost:5000/api/dl/listdir/` + rootDir + '/20'
+        axios.get(rootDir)
+          .then(response => {
+            // this.treeData = response.data.listdir
+            console.log(response.data.listdir)
+            // children = response.data.listdir
+            this.$root.eventHub.$emit('eventName2', response.data.listdir)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    }
   },
   created() {
     this.getDirList()
+    this.$root.eventHub.$on('eventName',(rootDir) => {
+        this.getchild(rootDir)
+    })
   }
 }
 </script>

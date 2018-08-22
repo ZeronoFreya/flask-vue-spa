@@ -16,19 +16,27 @@
       </span>
   </div>
   <ul v-if="isFolder" v-show="open" class="vue-tree-list">
-    <li v-if="isEmpty">
+    <!-- <li v-if="isEmpty">
         <div class="item-wrapper">
         	<span class="item-toggle"></span>
         	<span class="item-label">
                 <fa :icon="['fas','ellipsis-h']"/>
             </span>
         </div>
-    </li>
-    <tree-item v-else v-for="(item, idx) in model.children" :model="item" :options="options" :ids="ids" :depth="depth + 1" :ids-with-parent="idsWithParent" :half="half" :state="itemState" :key="idx" @handle="emitHandle" @child-change="childChange" />
+    </li> -->
+    <tree-item
+        v-for="(item, idx) in model.children"
+        :model="item" :options="options" :ids="ids"
+        :depth="depth + 1" :ids-with-parent="idsWithParent"
+        :half="half" :state="itemState" :key="idx"
+        @handle="emitHandle"
+        @child-change="childChange"
+    />
   </ul>
 </li>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'tree-item',
 
@@ -82,7 +90,8 @@ export default {
   data() {
     return {
       open: false,
-      itemState: 0
+      itemState: 0,
+      expended: 0
     }
   },
 
@@ -154,6 +163,9 @@ export default {
         this.itemState = this.itemState + 1
       }
     }
+    this.$root.eventHub.$on('eventName2',(listdir) => {
+        this.setChild(listdir)
+    })
   },
 
   watch: {
@@ -172,15 +184,75 @@ export default {
   methods: {
     toggle() {
       if (this.isFolder) {
+          this.getchild()
+        if (this.isEmpty) {
+            // this.getchild()
+            // console.log(0)
+            // this.$emit('toggle')
+            // this.emitToggle.call(this)
+        }
         this.open = !this.open
+      }
+    },
+    setChild(listdir) {
+        this.expended = listdir
+    },
+    getchild() {
+        let _p = this.$parent
+        let path = this.model.label
+        while (_p.model) {
+            path = _p.model.label + '$' + path
+            _p = _p.$parent
+        }
+        this.expended = this.model.children
+        this.$root.eventHub.$emit('eventName', path)
+        // path = `http://localhost:5000/api/dl/listdir/` + path + '/20'
+        // axios.get(path)
+        //   .then(response => {
+        //     // this.treeData = response.data.listdir
+        //     // console.log(response.data.listdir)
+        //     this.model.children = response.data.listdir
+        //   })
+        //   .catch(error => {
+        //     console.log(error)
+        //   })
+        // console.log(0, this)
+        // this.$emit('getchild',path) // 传递给vuetree的 @getchild
+        // if (fg === true) {
+        //     let _p = this.$parent
+        //     let path = this.model.label
+        //     while (_p.model) {
+        //         path = _p.model.label + '$' + path
+        //         _p = _p.$parent
+        //     }
+        //     this.$emit('getchild',path)
+        // }else{
+        //     console.log(this)
+        //     this.$emit('getchild',fg)
+        // }
+    },
+
+    emitToggle() {
+      console.log(1,this.isEmpty)
+      if (this.isEmpty) {
+          let _p = this.$parent
+          let path = this.model.label
+          while (_p.model) {
+              path = _p.model.label + '$' + path
+              _p = _p.$parent
+          }
+          console.log(path)
+          this.$emit('toggle', path,2)
       }
     },
 
     handle() {
+      console.log(0)
       this.emitHandle(this.self)
     },
 
     emitHandle(item) {
+      console.log(1)
       this.$emit('handle', item)
     },
 

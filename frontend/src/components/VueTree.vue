@@ -109,6 +109,7 @@
 
     methods: {
       handle (item) {
+        console.log(2)
         this.$emit('handle', item)
       },
       initOptions () {
