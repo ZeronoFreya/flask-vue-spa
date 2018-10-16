@@ -1,6 +1,6 @@
 #coding:utf-8
 #download
-from flask import Blueprint, render_template, redirect, jsonify
+from flask import Blueprint, render_template, redirect, request, jsonify
 from os import listdir
 from os.path import join, isdir, exists
 download = Blueprint('download',__name__)
@@ -55,3 +55,12 @@ def list_dir(rootDir, idx=1):
             'label': f
         })
     return jsonify(response)
+
+
+@download.route('/listdir2', methods=['POST'])
+def list_dir2():
+    print(request.json['rootDir'])
+    return jsonify({
+        'folders':['a','b'],
+        'files':['c','d']
+    })
