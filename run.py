@@ -22,7 +22,7 @@ def random_number():
 
 
 
-@app.route('/', defaults={'path': ''})
+@app.route('/', defaults={'path': ''}) 
 @app.route('/<path:path>')
 def catch_all(path):
     if app.debug:
@@ -30,5 +30,5 @@ def catch_all(path):
     return render_template("index.html")
 
 if __name__ == '__main__':
-    # app.debug = True
+    app.debug = True
     app.run()
