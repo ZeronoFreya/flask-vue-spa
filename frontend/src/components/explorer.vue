@@ -2,20 +2,24 @@
     <div class="explorer">
         <div class="label-wrapper" @click="toggleChildren">
             <div :style="indent" :class="labelClasses">
-                <i v-if="nodes" class="fa" :class="iconClasses"></i>
+                <font-icon v-if="nodes" :icon="iconClasses"/>
                 {{ label }}
             </div>
         </div>
-        
         <explorer
             v-if="showChildren"
-            v-for="node in nodes"
+            v-for="node in nodes" 
+            :key="node"
             :nodes="node.nodes"
             :label="node.label"
             :depth="depth + 1"></explorer>
     </div>
 </template>
 <script>
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPlusSquare, faMinusSquare  } from "@fortawesome/free-solid-svg-icons";
+// library.add(faCoffee, faSpinner );
+
 export default {
     props: ["label", "nodes", "depth"],
     data() {
@@ -26,16 +30,13 @@ export default {
     name: "explorer",
     computed: {
         iconClasses() {
-            return {
-                "fa-plus-square-o": !this.showChildren,
-                "fa-minus-square-o": this.showChildren,
-            };
+            return this.showChildren ? faMinusSquare : faPlusSquare;
         },
         labelClasses() {
             return { "has-children": this.nodes };
         },
         indent() {
-            return { transform: `translate(${this.depth * 50}px)` };
+            return { transform: `translate(${this.depth * 20}px)` };
         },
     },
     methods: {
