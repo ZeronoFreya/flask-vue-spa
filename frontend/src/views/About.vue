@@ -1,32 +1,10 @@
 <template>
   <div class="about">
     <h1>This is an about page</h1>
-    <div>
-        <p>demo</p>
-        <ul>
-            <li class="folders"
-                @click="">
-                <input type="checkbox">
-                <i>@</i>
-                <span>folder</span>
-                <div class="ctrl-btn-contain">
-                    <button type="button">del</button>
-                </div>
-            </li>
-            <li class="file">
-                <input type="checkbox">
-                <i>#</i>
-                <span>file</span>
-                <div class="ctrl-btn-contain">
-                    <button type="button">del</button>
-                </div>
-            </li>
-        </ul>
-    </div>
     <explorer 
         :label="tree.label" 
-        :nodes="tree.nodes"
-        :depth="0"></explorer>
+        :folders="tree.folders"
+        :files="tree.files"></explorer>
   </div>
 </template>
 <script>
@@ -36,47 +14,32 @@ export default {
     data() {
         return {
             rootDir: "f:\\Project\\Python",
-            list: {
-                name: "demo",
-                folders: [
-                    {
-                        name: "folder1",
-                        folders: [
-                            {
-                                name: "folder1-1",
-                            },
-                        ],
-                        files: [],
-                    },
-                    {
-                        name: "folder2",
-                    },
-                ],
-                files: ["file1", "file2"],
-            },
             tree: {
                 label: "root",
-                nodes: [
+                folders: [
                     {
-                        label: "item1",
-                        nodes: [
+                        label: "folder1",
+                        folders: [
                             {
-                                label: "item1.1",
+                                label: "folder1.1",
                             },
                             {
-                                label: "item1.2",
-                                nodes: [
+                                label: "folder1.2",
+                                folders: [
                                     {
-                                        label: "item1.2.1",
+                                        label: "folder1.2.1",
+                                        files: ["file1.2.1.1", "file1.2.1.2"]
                                     },
                                 ],
                             },
                         ],
+                        files: ["file1.1", "file1.2"],
                     },
                     {
-                        label: "item2",
+                        label: "folder2",
                     },
                 ],
+                files: ["file0.1", "file0.2"]
             },
         };
     },
