@@ -57,11 +57,13 @@ export default {
     .label-wrapper {
         padding-bottom: 10px;
         margin-bottom: 10px;
-        border-bottom: 1px solid #ccc;
+        // border-bottom: 1px solid #ccc;
         cursor: pointer;
     }
     .label-main{
-        padding-left: 40px;
+        padding-left: 30px;
+        border-left: 1px #ddd solid;
+        margin-left: 6px;
     }
 }
 </style>

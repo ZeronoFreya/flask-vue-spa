@@ -13,33 +13,33 @@ import explorer from "@/components/explorer.vue";
 export default {
     data() {
         return {
-            rootDir: "f:\\Project\\Python",
+            rootDir: "e:\\Fonts",
             tree: {
-                label: "root",
-                folders: [
+                "label": "root",
+                "folders": [
                     {
-                        label: "folder1",
-                        folders: [
+                        "label": "folder1",
+                        "folders": [
                             {
-                                label: "folder1.1",
+                                "label": "folder1.1",
                             },
                             {
-                                label: "folder1.2",
-                                folders: [
+                                "label": "folder1.2",
+                                "folders": [
                                     {
-                                        label: "folder1.2.1",
-                                        files: ["file1.2.1.1", "file1.2.1.2"]
+                                        "label": "folder1.2.1",
+                                        "files": ["file1.2.1.1", "file1.2.1.2"]
                                     },
                                 ],
                             },
                         ],
-                        files: ["file1.1", "file1.2"],
+                        "files": ["file1.1", "file1.2"],
                     },
                     {
-                        label: "folder2",
+                        "label": "folder2",
                     },
                 ],
-                files: ["file0.1", "file0.2"]
+                "files": ["file0.1", "file0.2"]
             },
         };
     },
@@ -48,12 +48,12 @@ export default {
             const path = "http://localhost:5000/api/dl/listdir2";
             axios
                 .post(path, {
-                    rootDir: "f:\\Project\\Python",
-                    idx: 2,
+                    rootDir: this.rootDir
                 })
                 .then(response => {
                     // this.randomNumber = response.data.randomNumber;
-                    console.log(response.data);
+                    // console.log(response.data);
+                    this.tree = response.data
                 })
                 .catch(error => {
                     console.log(error);

@@ -59,8 +59,17 @@ def list_dir(rootDir, idx=1):
 
 @download.route('/listdir2', methods=['POST'])
 def list_dir2():
-    print(request.json['rootDir'])
+    # print(request.json['rootDir'])
+    rootDir = request.json['rootDir']
+    folder = []
+    files = []
+    for lists in listdir(rootDir):
+        path = join(rootDir, lists)
+        if isdir(path):
+            folder.append(lists)
+        else:
+            files.append(lists)
     return jsonify({
-        'folders':['a','b'],
-        'files':['c','d']
+        "folders": folder,
+        "files": files
     })
