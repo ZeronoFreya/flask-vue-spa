@@ -17,7 +17,7 @@ import vueZtree from "@/components/vue-ztree.vue";
 export default {
     data() {
         return {
-            rootDir: "e:\\Fonts",
+            rootDir: "e:\\DownLoad",
         };
     },
     methods: {
